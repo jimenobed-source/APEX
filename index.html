@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX RANKINGS</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#07090e;color:white;font-family:Arial,sans-serif}
+nav{height:85px;padding:0 8%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #20232d;background:#090b11}
+.logo{font-size:24px;font-weight:900;letter-spacing:2px}
+.logo span{color:#00d9ff}
+nav a{color:#aaa;text-decoration:none;margin-left:28px;font-size:14px}
+nav a:hover{color:#00d9ff}
+.hero{padding:110px 9%;background:radial-gradient(ellipse at 80% 30%,#123047 0%,transparent 45%),#090b11}
+.tag{color:#00d9ff;font-size:12px;letter-spacing:4px;font-weight:bold}
+h1{font-size:68px;line-height:1.05;margin:25px 0}
+h1 span{color:#00d9ff}
+.hero p{color:#a5a9b4;max-width:500px;line-height:1.8}
+.btn{display:inline-block;margin-top:30px;background:#00d9ff;color:#05080d;padding:15px 25px;text-decoration:none;font-weight:bold;border-radius:5px}
+section{padding:75px 9%}
+.section-title{font-size:30px;margin-bottom:12px}
+.subtitle{color:#858b99;margin-bottom:35px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px}
+.card{background:#10141e;border:1px solid #252c3b;border-radius:12px;padding:28px;min-height:170px}
+.card h3{margin-bottom:15px;font-size:20px}
+.card p{color:#929aaa;line-height:1.7;font-size:14px}
+.accent{color:#00d9ff}
+.leaderboard{background:#0b0e16}
+table{width:100%;border-collapse:collapse;background:#10141e;border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:18px;border-bottom:1px solid #252c3b}
+th{color:#00d9ff;font-size:12px;letter-spacing:1px}
+td{color:#dce1ea}
+.social{background:#10141e;padding:35px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+footer{padding:30px 9%;border-top:1px solid #252c3b;color:#737b89;font-size:13px}
+@media(max-width:650px){h1{font-size:44px}nav{padding:0 5%}nav a{margin-left:10px;font-size:12px}.hero{padding:80px 6%}section{padding:55px 6%}}
+</style>
+</head>
+<body>
+<nav>
+<div class="logo">APEX <span>RANKINGS</span></div>
+<div>
+<a href="#rankings">Rankings</a>
+<a href="#matches">Matches</a>
+<a href="#leagues">Leagues</a>
+<a href="#socials">Socials</a>
+</div>
+</nav>
+
+<header class="hero">
+<div class="tag">THE HOME OF COMPETITIVE VR FOOTBALL</div>
+<h1>THE GAME.<br>THE PLAYERS.<br><span>THE RANKINGS.</span></h1>
+<p>Discover the players, follow the competition and keep up with everything happening across the Apex Rankings community.</p>
+<a href="#rankings" class="btn">EXPLORE RANKINGS →</a>
+</header>
+
+<section id="rankings" class="leaderboard">
+<h2 class="section-title">PLAYER <span class="accent">RANKINGS</span></h2>
+<p class="subtitle">The best players. Ranked by performance.</p>
+<table>
+<thead><tr><th>RANK</th><th>PLAYER</th><th>POSITION</th><th>POINTS</th></tr></thead>
+<tbody id="players">
+<tr><td colspan="4">Loading rankings...</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="matches">
+<h2 class="section-title">LIVE <span class="accent">MATCHES</span></h2>
+<p class="subtitle">Follow the action and watch competitive matches.</p>
+<div class="cards">
+<div class="card">
+<h3>LIVE STREAMING</h3>
+<p>Watch competitive VR football matches through our streaming coverage.</p>
+</div>
+<div class="card">
+<h3>UPCOMING MATCHES</h3>
+<p>Stay updated with upcoming fixtures and featured matchups.</p>
+</div>
+</div>
+</section>
+
+<section id="leagues">
+<h2 class="section-title">PARTNERED <span class="accent">LEAGUES</span></h2>
+<p class="subtitle">Working alongside competitive football communities.</p>
+<div class="cards">
+<div class="card">
+<h3>EVL × WASA</h3>
+<p>Our current partnered league collaboration.</p>
+</div>
+</div>
+</section>
+
+<section id="socials">
+<h2 class="section-title">JOIN THE <span class="accent">COMMUNITY</span></h2>
+<p class="subtitle">Stay connected with Apex Rankings.</p>
+<div class="social">
+<div>
+<h3>DISCORD COMMUNITY</h3>
+<p style="color:#929aaa;margin-top:8px">News, updates and community discussions.</p>
+</div>
+<a class="btn" href="YOUR_DISCORD_INVITE" target="_blank">GO TO DISCORD →</a>
+</div>
+</section>
+
+<footer>© 2026 APEX RANKINGS. ALL RIGHTS RESERVED.</footer>
+
+<script>
+async function loadPlayers(){
+try{
+const response=await fetch("/api/players");
+const players=await response.json();
+const tbody=document.getElementById("players");
+if(!players.length){
+tbody.innerHTML='<tr><td colspan="4">No players registered yet.</td></tr>';
+return;
+}
+tbody.innerHTML=players.slice(0,10).map((p,i)=>`
+<tr>
+<td>#${i+1}</td>
+<td>${p.username}</td>
+<td>${p.position}</td>
+<td>${p.points.toLocaleString()}</td>
+</tr>`).join("");
+}catch{
+document.getElementById("players").innerHTML='<tr><td colspan="4">Rankings unavailable.</td></tr>';
+}
+}
+loadPlayers();
+</script>
+</body>
+</html>
